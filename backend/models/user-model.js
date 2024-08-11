@@ -7,28 +7,28 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a name"],
       minlength: [3, "Name must be at least 3 characters"],
-      maxlength: [30, "Name must be less than 30 characters"],
+      unique: true,
     },
     email: {
-        type: String,
-        required: [true, "Please provide a email"],
-        unique: true,
-        validate: {
-          validator: (value) => {
-            return validator.isEmail(value);
-          },
-          message: (props) => `${props.value} is not a valid email`,
+      type: String,
+      required: [true, "Please provide a email"],
+      unique: true,
+      validate: {
+        validator: (value) => {
+          return validator.isEmail(value);
         },
+        message: (props) => `${props.value} is not a valid email`,
       },
+    },
     password: {
       type: String,
       required: true,
-      select: false,
+      minlength: [6, "Password must be at least 6 characters"],
     },
 
     profilepic: {
-      public_id: String,
-      url: String,
+      type: String,
+      default: "",
     },
     bio: {
       type: String,
