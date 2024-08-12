@@ -6,6 +6,7 @@ import { generateToken } from "../utils/Token.js";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 import { Readable } from "stream";
+import { Post } from "../models/post-model.js";
 
 dotenv.config();
 
@@ -75,6 +76,16 @@ export const loginUser = trycatchasyncerror(async (req, res, next) => {
     }
     const token = await generateToken(user);
 
+    const populatedposts = await Promise.all(
+      user.posts.map(async (postid) => {
+        const postData = await Post.findById(postid);
+        if (postData.author.equals(user._id)) {
+          return postData;
+        }
+        return null;
+      })
+    );
+
     const userData = {
       _id: user._id,
       username: user.username,
@@ -84,7 +95,7 @@ export const loginUser = trycatchasyncerror(async (req, res, next) => {
       gender: user.gender,
       followers: user.followers,
       followings: user.followings,
-      posts: user.posts,
+      posts: populatedposts,
       bookmark: user.bookmark,
     };
 

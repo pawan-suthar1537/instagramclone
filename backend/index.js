@@ -15,6 +15,7 @@ const isLoggerEnabled = process.env.isLogger === true;
 //routes imports
 import userRoutes from "./routes/userroutes.js";
 import postRoutes from "./routes/postroutes.js";
+import messageRoutes from "./routes/messageroutes.js";
 
 // middlewares
 dotenv.config();
@@ -61,6 +62,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({
