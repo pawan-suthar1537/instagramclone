@@ -7,9 +7,12 @@ import axios from "axios";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "@/redux/slice/AuthSlice";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -37,6 +40,8 @@ const Login = () => {
         }
       );
       if (res.data.success) {
+        dispatch(setToken(res.data.token));
+        dispatch(setUser(res.data.data));
         toast.success(res.data.message);
         setInput({
           email: "",

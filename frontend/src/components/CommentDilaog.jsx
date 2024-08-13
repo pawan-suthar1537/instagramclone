@@ -18,8 +18,8 @@ const CommentDilaog = ({ open, setOpen }) => {
     }
   };
 
-  const sendmesssgaehandler = () => {
-    console.log("sendmesssgaehandler");
+  const sendmesssgaehandler = (e) => {
+    alert("sendmesssgaehandler");
   };
 
   return (
