@@ -25,6 +25,7 @@ const Post = ({ post }) => {
   const [open, setOpen] = useState(false);
   const [liked, setliked] = useState(post.likes.includes(user?._id) || false);
   const [postlike, setpostlike] = useState(post.likes.length);
+  const [comment, setcomment] = useState(post.comments);
 
   const dispatch = useDispatch();
 
@@ -125,6 +126,36 @@ const Post = ({ post }) => {
     }
   };
 
+  const commenthandler = async (e) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_URL}/api/post/comment/${post?._id}`,
+        { text },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        const updatedcommentdata = [...comment, res.data.data];
+        setcomment(updatedcommentdata);
+
+        const updatedpostdata = posts.map((p) =>
+          p._id === post._id ? { ...p, comments: updatedcommentdata } : p
+        );
+
+        dispatch(setPosts(updatedpostdata));
+        toast.success(res.data.message);
+        setText("");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "failed to comment on post");
+    }
+  };
+
   return (
     <div className="my-8 w-full max-w-sm mx-auto">
       <div className="flex items-center justify-between">
@@ -167,6 +198,7 @@ const Post = ({ post }) => {
         <div className="flex items-center justify-between my-2">
           <div className="flex  items-center gap-3">
             <Heart
+              style={liked ? { fill: "red" } : { fill: "" }}
               onClick={likedislike}
               size={"25px"}
               className="cursor-pointer hover:text-gray-600"
@@ -189,7 +221,7 @@ const Post = ({ post }) => {
         onClick={() => setOpen(true)}
         className="cursor-pointer text-sm text-gray-400"
       >
-        view total {post?.comments?.length} comments
+        view total {comment?.length} comments
       </span>
       <CommentDilaog open={open} setOpen={setOpen} />
       <div className="flex items-center justify-between my-2">
@@ -201,7 +233,14 @@ const Post = ({ post }) => {
           value={text}
           onChange={changeventhandler}
         />
-        {text && <span className="text-[#3BADF8]">Post</span>}
+        {text && (
+          <span
+            onClick={commenthandler}
+            className="text-[#3BADF8] cursor-pointer"
+          >
+            Post
+          </span>
+        )}
       </div>
     </div>
   );

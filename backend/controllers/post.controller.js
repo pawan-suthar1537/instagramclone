@@ -244,7 +244,7 @@ export const addcomment = trycatchasyncerror(async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: `Comment added successfully on post ${postid}`,
+      message: `Comment added`,
       data: comment,
     });
   } catch (error) {
