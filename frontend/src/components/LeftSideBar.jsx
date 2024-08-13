@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken, setUser } from "@/redux/slice/AuthSlice";
 import { useState } from "react";
 import CreatePostDialog from "./CreatePostDialog";
+import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 
 const LeftSideBar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -33,6 +34,8 @@ const LeftSideBar = () => {
       if (res.data.success) {
         dispatch(setUser(null));
         dispatch(setToken(null));
+        dispatch(setSelectedPost(null));
+        dispatch(setPosts([]));
         toast.success(res.data.message);
         navigate("/login");
       }

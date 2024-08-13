@@ -13,7 +13,7 @@ import CommentDilaog from "./CommentDilaog";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
-import { setPosts } from "@/redux/slice/PostSlice";
+import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 
 const Post = ({ post }) => {
   const user = useSelector((state) => state.auth.user);
@@ -25,7 +25,7 @@ const Post = ({ post }) => {
   const [open, setOpen] = useState(false);
   const [liked, setliked] = useState(post.likes.includes(user?._id) || false);
   const [postlike, setpostlike] = useState(post.likes.length);
-  const [comment, setcomment] = useState(post.comments);
+  const [comment, setcomment] = useState(post.comments || []);
 
   const dispatch = useDispatch();
 
@@ -204,7 +204,10 @@ const Post = ({ post }) => {
               className="cursor-pointer hover:text-gray-600"
             />
             <MessageCircle
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                dispatch(setSelectedPost(post));
+                setOpen(true);
+              }}
               className="cursor-pointer hover:text-gray-600"
             />
             <Send className="cursor-pointer hover:text-gray-600" />
@@ -217,12 +220,18 @@ const Post = ({ post }) => {
         <span className="font-medium mr-2">{post?.author?.username}</span>
         {post?.caption}
       </p>
-      <span
-        onClick={() => setOpen(true)}
-        className="cursor-pointer text-sm text-gray-400"
-      >
-        view total {comment?.length} comments
-      </span>
+      {comment.length > 0 && (
+        <span
+          onClick={() => {
+            dispatch(setSelectedPost(post));
+            setOpen(true);
+          }}
+          className="cursor-pointer text-sm text-gray-400"
+        >
+          view total {comment?.length} comments
+        </span>
+      )}
+
       <CommentDilaog open={open} setOpen={setOpen} />
       <div className="flex items-center justify-between my-2">
         <input
