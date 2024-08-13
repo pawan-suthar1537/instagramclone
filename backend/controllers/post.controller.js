@@ -200,10 +200,10 @@ export const likedislikepost = trycatchasyncerror(async (req, res, next) => {
 
     if (isLiked) {
       await post.updateOne({ $pull: { likes: userid } });
-      message = `${userid} disliked ${post.caption} successfully`;
+      message = `disliked successfully`;
     } else {
       await post.updateOne({ $addToSet: { likes: userid } });
-      message = `${userid} liked ${post.caption} successfully`;
+      message = `liked successfully`;
     }
 
     await post.save();

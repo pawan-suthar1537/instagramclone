@@ -16,14 +16,17 @@ import axios from "axios";
 import { setPosts } from "@/redux/slice/PostSlice";
 
 const Post = ({ post }) => {
+  const user = useSelector((state) => state.auth.user);
+  const { token } = useSelector((state) => state.auth);
+
+  const { posts } = useSelector((state) => state.post);
+
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const [liked, setliked] = useState(post.likes.includes(user?._id) || false);
+  const [postlike, setpostlike] = useState(post.likes.length);
 
   const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
-  const { posts } = useSelector((state) => state.post);
 
   const changeventhandler = (e) => {
     const inputtext = e.target.value;
@@ -49,7 +52,7 @@ const Post = ({ post }) => {
       );
       console.log(post._id);
 
-      if (res.data.status) {
+      if (res.data.success) {
         toast.success(res.data.message);
         const updatedpostsafterdelete = posts.filter(
           (item) => item?._id !== post?._id
@@ -59,6 +62,66 @@ const Post = ({ post }) => {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "failed to delete post");
+    }
+  };
+
+  const followunfollow = async (e) => {
+    try {
+      console.log("token", token);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_URL}/api/user/followunfollow/${
+          post?.author?._id
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "failed to follow user");
+    }
+  };
+  const likedislike = async (e) => {
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_URL}/api/post/likedislikepost/${
+          post?._id
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        const updatedlikes = liked ? postlike - 1 : postlike + 1;
+        setpostlike(updatedlikes);
+        setliked(!liked);
+        const updatedposts = posts.map((p) =>
+          p._id === post?._id
+            ? {
+                ...p,
+                likes: liked
+                  ? p.likes.filter((id) => id !== user?._id)
+                  : [...p.likes, user?._id],
+              }
+            : p
+        );
+        dispatch(setPosts(updatedposts));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "failed to like post");
     }
   };
 
@@ -104,6 +167,7 @@ const Post = ({ post }) => {
         <div className="flex items-center justify-between my-2">
           <div className="flex  items-center gap-3">
             <Heart
+              onClick={likedislike}
               size={"25px"}
               className="cursor-pointer hover:text-gray-600"
             />
@@ -116,9 +180,7 @@ const Post = ({ post }) => {
           <Bookmark className="cursor-pointer hover:text-gray-600" />
         </div>
       </div>
-      <span className="font-medium block mb-2">
-        {post?.likes?.length} likes
-      </span>
+      <span className="font-medium block mb-2">{postlike} likes</span>
       <p>
         <span className="font-medium mr-2">{post?.author?.username}</span>
         {post?.caption}
