@@ -8,7 +8,8 @@ import Spinner from "./Spinner";
 import { toast } from "sonner";
 import { Image } from "lucide-react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts } from "@/redux/slice/PostSlice";
 
 const CreatePostDialog = ({ open, setopen }) => {
   const [image, setimage] = useState("");
@@ -16,7 +17,11 @@ const CreatePostDialog = ({ open, setopen }) => {
   const [imagepreview, setimagepreview] = useState("");
   const [loading, setloading] = useState(false);
 
+  const diaptch = useDispatch();
+
   const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+  const { posts } = useSelector((state) => state.post);
 
   const imageref = useRef();
   const filechangehandler = async (e) => {
@@ -54,7 +59,12 @@ const CreatePostDialog = ({ open, setopen }) => {
         }
       );
       if (res.data.success) {
+        diaptch(setPosts([res.data.data, ...posts]));
+        setopen(false);
         toast.success(res.data.message);
+        setcaption("");
+        setimagepreview("");
+        setimage("");
       }
     } catch (error) {
       console.log(error);
@@ -73,12 +83,11 @@ const CreatePostDialog = ({ open, setopen }) => {
           </DialogHeader>
           <div className="flex gap-3 items-center">
             <Avatar>
-              <AvatarImage alt="img" src="https://github.com/shadcn.png" />
-              {/* <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback> */}
+              <AvatarImage alt="userimg" src={user?.profilepic} />
             </Avatar>
             <div>
-              <h1 className="font-semibold text-xs">Username</h1>
-              <span className="text-gray-600 text-xs">Bio here</span>
+              <h1 className="font-semibold text-xs">{user?.username}</h1>
+              <span className="text-gray-600 text-xs">{user?.bio}</span>
             </div>
           </div>
           {/* captio inpout */}
@@ -116,7 +125,7 @@ const CreatePostDialog = ({ open, setopen }) => {
           </Button>
           {imagepreview &&
             (loading ? (
-              <Button>
+              <Button className="flex gap-2">
                 Please Wait.. <Spinner />
               </Button>
             ) : (

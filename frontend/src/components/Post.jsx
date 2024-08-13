@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import {
@@ -9,11 +9,9 @@ import {
   Send,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { CiHeart } from "react-icons/ci";
 import CommentDilaog from "./CommentDilaog";
-import { Input } from "./ui/input";
 
-const Post = () => {
+const Post = ({ post }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -31,10 +29,9 @@ const Post = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={post?.author?.profilepic} alt="userpic" />
           </Avatar>
-          <h1>username</h1>
+          <h1>{post?.author?.username}</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
@@ -54,7 +51,7 @@ const Post = () => {
         </Dialog>
       </div>
       <img
-        src="https://images.unsplash.com/photo-1722928852010-5ebdd0ed568f?q=80&w=1885&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        src={post?.image}
         alt="postimage"
         className="object-cover rounded-lg my-2 w-full h-[90%] "
       />
@@ -74,16 +71,18 @@ const Post = () => {
           <Bookmark className="cursor-pointer hover:text-gray-600" />
         </div>
       </div>
-      <span className="font-medium block mb-2">1k Likes</span>
+      <span className="font-medium block mb-2">
+        {post?.likes?.length} likes
+      </span>
       <p>
-        <span className="font-medium mr-2">username</span>
-        caption
+        <span className="font-medium mr-2">{post?.author?.username}</span>
+        {post?.caption}
       </p>
       <span
         onClick={() => setOpen(true)}
         className="cursor-pointer text-sm text-gray-400"
       >
-        view total 89 comments
+        view total {post?.comments?.length} comments
       </span>
       <CommentDilaog open={open} setOpen={setOpen} />
       <div className="flex items-center justify-between my-2">
