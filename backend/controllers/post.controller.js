@@ -21,7 +21,6 @@ export const addpost = trycatchasyncerror(async (req, res, next) => {
 
     const image = req.file;
     const author = req.user.userid;
-    console.log(author);
     const user = await User.findById(author);
     if (!user) {
       return next(new CustomError("User not found", 404));

@@ -84,6 +84,7 @@ const CreatePostDialog = ({ open, setopen }) => {
           <div className="flex gap-3 items-center">
             <Avatar>
               <AvatarImage alt="userimg" src={user?.profilepic} />
+              <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
               <h1 className="font-semibold text-xs">{user?.username}</h1>
