@@ -133,7 +133,12 @@ export const logoutUser = trycatchasyncerror(async (req, res, next) => {
 export const getprofile = trycatchasyncerror(async (req, res, next) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id)
+      .populate({
+        path: "posts",
+        createdAt: -1,
+      })
+      .populate("bookmark");
     if (!user) {
       return next(new CustomError("User not found", 404));
     }
