@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import UseGetUserProfile from "@/hooks/UseGetUserProfile";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Heart, MessageCircle } from "lucide-react";
@@ -16,10 +16,11 @@ const Profile = () => {
   UseGetUserProfile(userid);
 
   const { userprofile } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   console.log("userprofile from state ", userprofile);
 
-  const isloggedin = true;
-  const isfollowing = true;
+  const isloggedin = user?._id === userprofile?._id;
+  const isfollowing = false;
   const displayposts =
     tab === "post" ? userprofile?.posts : userprofile?.bookmark;
 
@@ -32,7 +33,7 @@ const Profile = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-center justify-center w-1/2">
           <Avatar className="w-40 h-40">
-            <AvatarImage src={userprofile.profileImage} />
+            <AvatarImage src={userprofile.profilepic} />
             <AvatarFallback>{userprofile.username.charAt(0)}</AvatarFallback>
           </Avatar>
         </div>
@@ -41,9 +42,11 @@ const Profile = () => {
             <h2 className="text-xl font-bold mt-4">{userprofile?.username}</h2>
             {isloggedin ? (
               <>
-                <Button variant="secondary" className="h-8 mt-4 bg-slate-400">
-                  Edit Profile
-                </Button>
+                <Link to={"/profile/edit"}>
+                  <Button variant="secondary" className="h-8 mt-4 bg-slate-400">
+                    Edit Profile
+                  </Button>
+                </Link>
                 <Button variant="secondary" className="h-8 mt-4 bg-slate-400">
                   View Archive{" "}
                 </Button>
@@ -63,7 +66,10 @@ const Profile = () => {
                     </Button>
                   </>
                 ) : (
-                  <Button variant="secondary" className="h-8 mt-4 bg-slate-400">
+                  <Button
+                    variant="secondary"
+                    className=" text-white h-8 mt-4 bg-[#557dff] hover:bg-[#557dff]"
+                  >
                     Follow
                   </Button>
                 )}
