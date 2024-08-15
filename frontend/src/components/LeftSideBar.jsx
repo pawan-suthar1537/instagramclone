@@ -51,8 +51,10 @@ const LeftSideBar = () => {
       setopen(true);
     } else if (name === "Profile") {
       navigate(`/profile/${user?._id}`);
-    }else if (name === "Home") {
+    } else if (name === "Home") {
       navigate(`/`);
+    } else if (name === "Message") {
+      navigate(`/chat`);
     }
   };
 

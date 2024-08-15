@@ -1,5 +1,5 @@
 import express from "express";
-const app = express();
+import { app, server } from "./socket/socket.js";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -76,7 +76,7 @@ app.use(errorHandlerMiddleware);
 // server listen
 connectDB()
   .then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`);
     });
   })

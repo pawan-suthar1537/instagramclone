@@ -33,8 +33,8 @@ const Profile = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-center justify-center w-1/2">
           <Avatar className="w-40 h-40">
-            <AvatarImage src={userprofile.profilepic} />
-            <AvatarFallback>{userprofile.username.charAt(0)}</AvatarFallback>
+            <AvatarImage src={userprofile?.profilepic} />
+            <AvatarFallback>{userprofile?.username.charAt(0)}</AvatarFallback>
           </Avatar>
         </div>
         <div className="flex my-6 flex-col items-start justify-center w-1/2">
