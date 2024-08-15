@@ -6,6 +6,7 @@ import { Post } from "../models/post-model.js";
 import { User } from "../models/user-model.js";
 import { Comment } from "../models/comment-model.js";
 import CustomError from "../middlewares/customerror.js";
+import { getreceiversocketid } from "../socket/socket.js";
 
 dotenv.config();
 
@@ -196,17 +197,39 @@ export const likedislikepost = trycatchasyncerror(async (req, res, next) => {
 
     const isLiked = post.likes.includes(userid);
 
-    let message;
+    let message, notificationType;
 
     if (isLiked) {
       await post.updateOne({ $pull: { likes: userid } });
       message = `disliked successfully`;
+      notificationType = "dislike";
     } else {
       await post.updateOne({ $addToSet: { likes: userid } });
       message = `liked successfully`;
+      notificationType = "like";
     }
 
     await post.save();
+
+    const user = await User.findById(userid).select("username profilepic");
+    const postownerid = post.author.toString();
+    if (postownerid !== userid) {
+      // send a notification threw socketio
+      const notification = {
+        type: notificationType,
+        userid,
+        userdetails: user,
+        postid,
+        message:
+          notificationType === "like"
+            ? "Your post liked"
+            : "Your post disliked",
+      };
+      const postownersocketid = getreceiversocketid(postownerid);
+      if (postownersocketid) {
+        io.to(postownersocketid).emit("notification", notification);
+      }
+    }
 
     res.status(200).json({
       success: true,

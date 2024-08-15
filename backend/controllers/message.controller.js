@@ -23,7 +23,7 @@ export const sendmessage = trycatchasyncerror(async (req, res, next) => {
       });
     }
 
-    const newMessage = Message.create({
+    const newMessage = await Message.create({
       senderid,
       receiverid,
       message,
@@ -35,11 +35,11 @@ export const sendmessage = trycatchasyncerror(async (req, res, next) => {
 
     await Promise.all([newMessage.save(), conversation.save()]);
 
-    //  send message ovr socketio
+    //  send message over socketio
 
     const receiversocketid = getreceiversocketid(receiverid);
-    if(receiversocketid){
-      io.to(receiversocketid).emit('newmsg',newMessage)
+    if (receiversocketid) {
+      io.to(receiversocketid).emit("newmsg", newMessage);
     }
 
     res.status(200).json({
@@ -59,7 +59,7 @@ export const getmessages = trycatchasyncerror(async (req, res, next) => {
 
     const conversation = await Conversation.findOne({
       particiapants: { $all: [senderid, receiverid] },
-    });
+    }).populate("messages");
 
     if (!conversation) {
       return next(new CustomError("Conversation not found", 404));
@@ -68,7 +68,7 @@ export const getmessages = trycatchasyncerror(async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Messages fetched successfully",
-      data: conversation.messages,
+      data: conversation?.messages,
     });
   } catch (error) {
     return next(new CustomError(error.message, 500));

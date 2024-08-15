@@ -18,7 +18,7 @@ const SuggestedUsers = () => {
             className="flex items-center justify-between my-5"
           >
             <div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 <Link to={`/profile/${user?._id}`}>
                   <Avatar>
                     <AvatarImage src={user?.profilepic} alt="userpic" />
@@ -29,7 +29,7 @@ const SuggestedUsers = () => {
                   <h1 className="font-semibold text-sm">
                     <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
                   </h1>
-                  <span>{user?.bio || "Bio here.."}</span>
+                  {/* <span>{user?.bio?.slice(0, 10) + "" || "Bio here.."}</span> */}
                 </div>
               </div>
             </div>
