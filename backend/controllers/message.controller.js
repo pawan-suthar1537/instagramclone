@@ -2,6 +2,7 @@ import { trycatchasyncerror } from "../middlewares/trycatchasync.js";
 import CustomError from "../middlewares/customerror.js";
 import { Conversation } from "../models/conversation-model.js";
 import { Message } from "../models/message-model.js";
+import { getreceiversocketid, io } from "../socket/socket.js";
 
 export const sendmessage = trycatchasyncerror(async (req, res, next) => {
   try {
@@ -33,6 +34,13 @@ export const sendmessage = trycatchasyncerror(async (req, res, next) => {
     }
 
     await Promise.all([newMessage.save(), conversation.save()]);
+
+    //  send message ovr socketio
+
+    const receiversocketid = getreceiversocketid(receiverid);
+    if(receiversocketid){
+      io.to(receiversocketid).emit('newmsg',newMessage)
+    }
 
     res.status(200).json({
       success: true,
