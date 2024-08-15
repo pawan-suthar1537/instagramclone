@@ -12,14 +12,14 @@ const RightSideBar = () => {
         <Link to={`/profile/${user?._id}`}>
           <Avatar>
             <AvatarImage src={user?.profilepic} alt="userpic" />
-            <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Link>
         <div className="">
           <h1 className="font-semibold text-sm">
             <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
           </h1>
-          <span>{user?.bio || "Bio here.."}</span>
+          {/* <span>{user?.bio.slice(0, 20) || "Bio here.."}</span> */}
         </div>
       </div>
       <SuggestedUsers />
