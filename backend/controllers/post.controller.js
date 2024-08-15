@@ -6,7 +6,7 @@ import { Post } from "../models/post-model.js";
 import { User } from "../models/user-model.js";
 import { Comment } from "../models/comment-model.js";
 import CustomError from "../middlewares/customerror.js";
-import { getreceiversocketid } from "../socket/socket.js";
+import { getreceiversocketid, io } from "../socket/socket.js";
 
 dotenv.config();
 

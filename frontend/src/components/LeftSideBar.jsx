@@ -16,9 +16,12 @@ import { setToken, setUser } from "@/redux/slice/AuthSlice";
 import { useState } from "react";
 import CreatePostDialog from "./CreatePostDialog";
 import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
 
 const LeftSideBar = () => {
   const user = useSelector((state) => state.auth.user);
+  const { likenotification } = useSelector((state) => state.notification);
   const [open, setopen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -112,6 +115,57 @@ const LeftSideBar = () => {
               >
                 {item.icon}
                 <span className="select-none">{item.name}</span>
+                {item.name === "Notifications" &&
+                  likenotification.length > 0 && (
+                    <Popover>
+                      <PopoverTrigger aschild>
+                        <div>
+                          <Button
+                            size="icon"
+                            className="rounded-full h-5 w-5 absolute bottom-6 left-6 bg-red-600 hover:bg-red-600"
+                          >
+                            {likenotification.length}
+                          </Button>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <div>
+                          {likenotification.length === 0 ? (
+                            <p>No new Notifications</p>
+                          ) : (
+                            likenotification.map((notification, index) => {
+                              return (
+                                <div
+                                  key={index}
+                                  className="flex items-center gap-3 my-2"
+                                >
+                                  <Avatar>
+                                    <AvatarImage
+                                      src={
+                                        notification?.userdetails?.profilepic
+                                      }
+                                      alt="userpic"
+                                    />
+                                    <AvatarFallback>
+                                      {notification?.userdetails?.username?.charAt(
+                                        0
+                                      )}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <p className="text-sm">
+                                    <span className="font-bold">
+                                      {notification?.userdetails?.username}{" "}
+                                    </span>
+                                    liked your post
+                                  </p>
+                                </div>
+                              );
+                            })
+                          )}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  )}
               </div>
             );
           })}
