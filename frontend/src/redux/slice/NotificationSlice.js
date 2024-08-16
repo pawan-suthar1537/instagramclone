@@ -15,8 +15,12 @@ const notificationslice = createSlice({
         );
       }
     },
+    setclearnotification: (state, action) => {
+      state.likenotification = action.payload;
+    },
   },
 });
 
-export const { setlikenotification } = notificationslice.actions;
+export const { setlikenotification, setclearnotification } =
+  notificationslice.actions;
 export default notificationslice.reducer;

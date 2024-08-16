@@ -1,4 +1,3 @@
-import { LogIn } from "lucide-react";
 import Signup from "./components/Signup";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
@@ -53,7 +52,7 @@ function App() {
   const { socket } = useSelector((state) => state.socket);
   useEffect(() => {
     if (user) {
-      const socketio = io("http://localhost:3000", {
+      const socketio = io(`${import.meta.env.VITE_API_SERVER_URL}`, {
         query: {
           userid: user?._id,
         },
@@ -61,15 +60,12 @@ function App() {
       });
       dispatch(setSocket(socketio));
       // listing events
-
       socketio.on("getonlineusers", (onlineusers) => {
-        // console.log(onlineusers);
         dispatch(setonlineusers(onlineusers));
       });
 
       //  for listen notification
       socketio.on("notification", (notification) => {
-        // console.log(onlineusers);
         dispatch(setlikenotification(notification));
       });
 

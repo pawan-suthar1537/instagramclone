@@ -22,6 +22,6 @@ router.get("/myallposts", isAuthenticated, getmyallposts); //
 router.post("/likedislikepost/:postid", isAuthenticated, likedislikepost); //
 router.post("/comment/:id", isAuthenticated, addcomment); //
 router.get("/comments/:id", getallcommentsofpost); //
-router.post("/bookmark/:id", isAuthenticated, bookmarkpost); //
+router.get("/bookmark/:id", isAuthenticated, bookmarkpost); //
 
 export default router;

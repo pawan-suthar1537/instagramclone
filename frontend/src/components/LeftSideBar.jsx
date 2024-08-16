@@ -18,6 +18,7 @@ import CreatePostDialog from "./CreatePostDialog";
 import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
+import { setclearnotification } from "@/redux/slice/NotificationSlice";
 
 const LeftSideBar = () => {
   const user = useSelector((state) => state.auth.user);
@@ -45,6 +46,10 @@ const LeftSideBar = () => {
     } catch (error) {
       toast.error(error.response.data.message);
     }
+  };
+
+  const clearnotification = () => {
+    dispatch(setclearnotification([]));
   };
 
   const sidebarhandle = (name) => {
@@ -90,7 +95,7 @@ const LeftSideBar = () => {
       icon: (
         <Avatar className="w-6 h-6">
           <AvatarImage src={user?.profilepic} alt="@shadcn" />
-          <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
         </Avatar>
       ),
       name: "Profile",
@@ -158,6 +163,7 @@ const LeftSideBar = () => {
                                     </span>
                                     liked your post
                                   </p>
+                                  <button onClick={clearnotification}>X</button>
                                 </div>
                               );
                             })

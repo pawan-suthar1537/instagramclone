@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import axios from "axios";
 import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
+import { setUser } from "@/redux/slice/AuthSlice";
 
 const Post = ({ post }) => {
   const user = useSelector((state) => state.auth.user);
@@ -23,9 +24,12 @@ const Post = ({ post }) => {
 
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-  const [liked, setliked] = useState(post.likes.includes(user?._id) || false);
-  const [postlike, setpostlike] = useState(post.likes.length);
-  const [comment, setcomment] = useState(post.comments || []);
+  const [liked, setliked] = useState(post?.likes?.includes(user?._id) || false);
+  const [postlike, setpostlike] = useState(post?.likes.length);
+  const [comment, setcomment] = useState(post?.comments || []);
+  const [isFollowing, setIsFollowing] = useState(
+    post?.author?.followers?.includes(user?._id) || false
+  );
 
   const dispatch = useDispatch();
 
@@ -82,6 +86,8 @@ const Post = ({ post }) => {
         }
       );
       if (res.data.success) {
+        setIsFollowing((prev) => !prev);
+        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -156,6 +162,23 @@ const Post = ({ post }) => {
     }
   };
 
+  const bookmarkhandler = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_SERVER_URL}/api/post/bookmark/${post?._id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "failed to bookmark post");
+    }
+  };
+
   return (
     <div className="my-8 w-full max-w-sm mx-auto">
       <div className="flex items-center justify-between">
@@ -171,9 +194,16 @@ const Post = ({ post }) => {
             <MoreHorizontal className="cursor-pointer" />
           </DialogTrigger>
           <DialogContent className="flex flex-col items-center text-center text-sm">
-            <Button variant="ghost" className="cursor-pointer w-fit font-bold">
-              follow
-            </Button>
+            {post?.author?._id !== user?._id && (
+              <Button
+                onClick={followunfollow}
+                variant="outline"
+                className="cursor-pointer w-fit font-bold bg-blue-500 text-white"
+              >
+                {isFollowing ? "unfollow" : "follow"}
+              </Button>
+            )}
+
             <Button variant="ghost" className="cursor-pointer w-fit font-bold">
               Favorite
             </Button>
@@ -212,7 +242,10 @@ const Post = ({ post }) => {
             />
             <Send className="cursor-pointer hover:text-gray-600" />
           </div>
-          <Bookmark className="cursor-pointer hover:text-gray-600" />
+          <Bookmark
+            onClick={bookmarkhandler}
+            className="cursor-pointer hover:text-gray-600"
+          />
         </div>
       </div>
       <span className="font-medium block mb-2">{postlike} likes</span>

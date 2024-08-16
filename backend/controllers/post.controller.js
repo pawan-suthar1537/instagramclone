@@ -326,7 +326,7 @@ export const bookmarkpost = trycatchasyncerror(async (req, res, next) => {
       await user.save();
       return res.status(200).json({
         success: true,
-        message: `Post ${post._id} bookmarked`,
+        message: `Post bookmarked successfully`,
         data: user,
       });
     }

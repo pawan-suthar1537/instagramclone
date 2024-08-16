@@ -21,7 +21,7 @@ import messageRoutes from "./routes/messageroutes.js";
 dotenv.config();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", ""],
     credentials: true,
   })
 );
