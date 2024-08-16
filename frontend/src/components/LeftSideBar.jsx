@@ -109,7 +109,10 @@ const LeftSideBar = () => {
   return (
     <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
       <div className="flex flex-col">
-        <h1>LOGO</h1>
+        <div className="my-4 flex items-center font-bold text-xl text-center ">
+          <img src="./instagra.png" className="h-10 w-10" alt="" />
+          <span className="ml-2">Instagram Clone</span>
+        </div>
         <div>
           {sidebaritems.map((item, index) => {
             return (

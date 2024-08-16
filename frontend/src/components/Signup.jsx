@@ -60,10 +60,11 @@ const Signup = () => {
         className="shadow-lg flex flex-col gap-5 p-8"
       >
         <div className="my-5">
-          <h1 className="text-center font-bold text-xl">LOGO</h1>
+          <div className="mb-4 flex items-center justify-center text-center font-bold text-xl">
+            <img src="./instagra.png" className="h-10 w-10" alt="" />
+          </div>
           <p className="text-sm text-center">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem,
-            aspernatur.
+            create an account to see photos and videos from your friends.
           </p>
         </div>
         <div>
