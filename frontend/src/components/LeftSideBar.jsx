@@ -296,13 +296,13 @@ const Sidebar = () => {
     <div {...swipeHandlers}>
       {isMobile ? (
         <>
-          {/* <Button
+          <Button
             variant="ghost"
             onClick={() => setOpen(true)}
             className="bg-white text-black p-5 stickey top-0 z-50"
           >
             <span className="text-lg">X</span>
-          </Button> */}
+          </Button>
           <Drawer
             open={open}
             onClose={() => setOpen(false)}
