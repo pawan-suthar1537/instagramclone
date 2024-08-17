@@ -65,7 +65,11 @@ const Login = () => {
       >
         <div className="my-5">
           <div className="mb-4 flex items-center justify-center text-center font-bold text-xl">
-            <img src="./instagra.png" className="h-10 w-10" alt="" />
+            <img
+              src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e9/d3/51/e9d35161-58c1-5ba7-66d1-f51dcae69707/Prod-0-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.webp"
+              className="h-10 w-10"
+              alt=""
+            />
           </div>
           <p className="text-sm text-center">
             login to see photos and videos from your friends.

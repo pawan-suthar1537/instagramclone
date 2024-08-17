@@ -12,12 +12,13 @@ const Profile = () => {
   const [tab, settab] = useState("post");
 
   const userid = params.id;
+  console.log("userid", userid);
 
   UseGetUserProfile(userid);
 
   const { userprofile } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
-  console.log("userprofile from state ", userprofile);
+  console.log("userprofile from state", userprofile);
 
   const isloggedin = user?._id === userprofile?._id;
   const isfollowing = false;

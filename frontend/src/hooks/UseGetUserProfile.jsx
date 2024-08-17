@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const UseGetUserProfile = (userid) => {
-  const token = useSelector((state) => state.token);
+  const { token } = useSelector((state) => state.auth);
+  console.log("token fomr fetch GetUserProfile ", token);
 
   const dispatch = useDispatch();
   useEffect(() => {
