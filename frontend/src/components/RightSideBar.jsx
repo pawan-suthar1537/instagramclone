@@ -6,8 +6,9 @@ import SuggestedUsers from "./SuggestedUsers";
 
 const RightSideBar = () => {
   const { user } = useSelector((state) => state.auth);
+
   return (
-    <div className="w-fit my-10 pr-32">
+    <div className="hidden lg:block w-fit my-10 pr-32">
       <div className="flex items-center gap-2">
         <Link to={`/profile/${user?._id}`}>
           <Avatar>
@@ -15,11 +16,10 @@ const RightSideBar = () => {
             <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
           </Avatar>
         </Link>
-        <div className="">
+        <div>
           <h1 className="font-semibold text-sm">
             <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
           </h1>
-          {/* <span>{user?.bio.slice(0, 20) || "Bio here.."}</span> */}
         </div>
       </div>
       <SuggestedUsers />

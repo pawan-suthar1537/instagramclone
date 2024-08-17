@@ -29,11 +29,10 @@ const SuggestedUsers = () => {
                   <h1 className="font-semibold text-sm">
                     <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
                   </h1>
-                  {/* <span>{user?.bio?.slice(0, 10) + "" || "Bio here.."}</span> */}
                 </div>
               </div>
             </div>
-            <span className=" text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#2b74a5] ">
+            <span className="text-[#3BADF8] text-xs font-bold cursor-pointer hover:text-[#2b74a5]">
               follow
             </span>
           </div>

@@ -4,9 +4,9 @@ import LeftSideBar from "./LeftSideBar";
 
 const MainLayout = () => {
   return (
-    <div>
-      <LeftSideBar />
-      <div>
+    <div className="flex flex-col md:flex-row">
+      <LeftSideBar className="w-full md:w-64" />
+      <div className="flex-grow p-4">
         <Outlet />
       </div>
     </div>
