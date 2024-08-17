@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Feed from "./Feed";
 import RightSideBar from "./RightSideBar";
 import Usegetallposts from "@/hooks/Usegetallposts";

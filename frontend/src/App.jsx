@@ -12,11 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSocket } from "./redux/slice/Socketslice";
 import { setonlineusers } from "./redux/slice/ChatSlice";
 import { setlikenotification } from "./redux/slice/NotificationSlice";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const browserrouter = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
