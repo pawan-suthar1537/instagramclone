@@ -21,6 +21,7 @@ import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 import { setclearnotification } from "@/redux/slice/NotificationSlice";
 import { Button } from "./ui/button";
 import { useSwipeable } from "react-swipeable";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -51,6 +52,7 @@ const Sidebar = () => {
         dispatch(setSelectedPost(null));
         dispatch(setPosts([]));
         dispatch(setuserprofile(null));
+
         toast.success(res.data.message);
         navigate("/login");
       }

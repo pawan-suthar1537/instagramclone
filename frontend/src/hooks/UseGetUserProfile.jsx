@@ -20,7 +20,7 @@ const UseGetUserProfile = (userid) => {
             withCredentials: true,
           }
         );
-        console.log("UseGetUserProfile", res.data.data);
+        console.log(`UseGetUserProfile of ${userid}`, res.data.data);
         if (res.data.success) {
           dispatch(setuserprofile(res.data.data));
         }
