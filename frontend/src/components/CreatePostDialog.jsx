@@ -67,7 +67,7 @@ const CreatePostDialog = ({ open, setopen }) => {
         setimage("");
       }
     } catch (error) {
-      console.log(error);
+      console.log("failed to create post", error);
       toast.error(error.response?.data?.message || "failed to create post");
     } finally {
       setloading(false);

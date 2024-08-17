@@ -205,7 +205,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "sonner";
-import { setToken, setUser } from "@/redux/slice/AuthSlice";
+import { setToken, setUser, setuserprofile } from "@/redux/slice/AuthSlice";
 import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 import { setclearnotification } from "@/redux/slice/NotificationSlice";
 import { Button } from "./ui/button";
@@ -239,6 +239,7 @@ const Sidebar = () => {
         dispatch(setToken(null));
         dispatch(setSelectedPost(null));
         dispatch(setPosts([]));
+        dispatch(setuserprofile(null));
         toast.success(res.data.message);
         navigate("/login");
       }
