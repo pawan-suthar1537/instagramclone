@@ -86,9 +86,9 @@ const Post = ({ post }) => {
         }
       );
       if (res.data.success) {
-        setIsFollowing((prev) => !prev);
         dispatch(setUser(res.data.user));
         toast.success(res.data.message);
+        setIsFollowing((prev) => !prev);
       }
     } catch (error) {
       console.log(error);
