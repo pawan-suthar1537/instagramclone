@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from "./ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, SendHorizontal } from "lucide-react";
 import { Button } from "./ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import Comment from "./Comment";
@@ -143,7 +143,7 @@ const CommentDilaog = ({ open, setOpen }) => {
                   className="outline-none w-full border border-gray-300 p-2 rounded-lg"
                 />
                 <Button disabled={!text.trim()} onClick={commenthandler}>
-                  add comment
+                  <SendHorizontal className="h-4 w-4" />
                 </Button>
               </div>
             </div>

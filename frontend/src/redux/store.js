@@ -37,7 +37,8 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: ["socketio/setSocket"], // Add other non-serializable actions if needed
+        ignoredPaths: ["socket.socket"], // Add other non-serializable state paths if needed
       },
     }),
 });

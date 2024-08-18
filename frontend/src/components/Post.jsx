@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import {
@@ -17,7 +17,7 @@ import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 import { setUser } from "@/redux/slice/AuthSlice";
 
 const Post = ({ post }) => {
-  const user = useSelector((state) => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   const { token } = useSelector((state) => state.auth);
 
   const { posts } = useSelector((state) => state.post);
@@ -28,8 +28,16 @@ const Post = ({ post }) => {
   const [postlike, setpostlike] = useState(post?.likes.length);
   const [comment, setcomment] = useState(post?.comments || []);
   const [isFollowing, setIsFollowing] = useState(
-    post?.author?.followers?.includes(user?._id) || false
+    user?.followings?.includes(post?.author?._id) || false
   );
+
+  useEffect(() => {
+    if (user?.followings?.includes(post?.author?._id)) {
+      setIsFollowing(true);
+    } else {
+      setIsFollowing(false);
+    }
+  }, [user, post]);
 
   const dispatch = useDispatch();
 
@@ -72,6 +80,10 @@ const Post = ({ post }) => {
 
   const followunfollow = async (e) => {
     try {
+      if (!user) {
+        toast.error("User is not logged in.");
+        return;
+      }
       console.log("token", token);
       const res = await axios.post(
         `${import.meta.env.VITE_API_SERVER_URL}/api/user/followunfollow/${
@@ -85,14 +97,25 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
+      console.log("followunfollow", res.data);
       if (res.data.success) {
-        dispatch(setUser(res.data.user));
+        const { followers, followings } = res.data;
+
+        dispatch(
+          setUser({
+            ...user,
+            followings: followings,
+            followers: followers,
+          })
+        );
+
+        setIsFollowing(!isFollowing);
+
         toast.success(res.data.message);
-        setIsFollowing((prev) => !prev);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "failed to follow user");
+      toast.error(error?.message);
     }
   };
   const likedislike = async (e) => {
@@ -178,6 +201,8 @@ const Post = ({ post }) => {
       toast.error(error.response?.data?.message || "failed to bookmark post");
     }
   };
+
+  console.log("isFollowing", isFollowing);
 
   return (
     <div className="my-8 w-full max-w-sm mx-auto p-5 lg:p-0">

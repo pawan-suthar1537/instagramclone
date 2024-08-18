@@ -248,9 +248,14 @@ export const followOrUnfollow = trycatchasyncerror(async (req, res, next) => {
     return next(new CustomError("User not found", 404));
   }
 
+  // Initialize followings and followers arrays if not already present
+  user.followings = user.followings || [];
+  targetUser.followers = targetUser.followers || [];
+
   const isFollowing = user.followings.includes(jiskofollowkrunga);
 
   if (isFollowing) {
+    // Unfollow user
     await Promise.all([
       User.updateOne(
         { _id: followkrnewala },
@@ -261,11 +266,24 @@ export const followOrUnfollow = trycatchasyncerror(async (req, res, next) => {
         { $pull: { followers: followkrnewala } }
       ),
     ]);
+
+    const updatedUser = await User.findById(followkrnewala).select(
+      "followings followers"
+    );
+    const updatedTargetUser = await User.findById(jiskofollowkrunga).select(
+      "followings followers"
+    );
+
     return res.status(200).json({
       success: true,
-      message: `Unfollowed ${targetUser.username} successfully`,
+      message: isFollowing
+        ? `Unfollowed ${targetUser.username} successfully`
+        : `Followed ${targetUser.username} successfully`,
+      followkrnewala: updatedUser,
+      jiskofollowkrunga: updatedTargetUser,
     });
   } else {
+    // Follow user
     await Promise.all([
       User.updateOne(
         { _id: followkrnewala },
@@ -276,9 +294,20 @@ export const followOrUnfollow = trycatchasyncerror(async (req, res, next) => {
         { $push: { followers: followkrnewala } }
       ),
     ]);
+
+    // Return the updated lists
+    const updatedUser = await User.findById(followkrnewala).select(
+      "followings"
+    );
+    const updatedTargetUser = await User.findById(jiskofollowkrunga).select(
+      "followers"
+    );
+
     return res.status(200).json({
       success: true,
       message: `Followed ${targetUser.username} successfully`,
+      followings: updatedUser.followings,
+      followers: updatedTargetUser.followers,
     });
   }
 });
