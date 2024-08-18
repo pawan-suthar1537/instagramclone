@@ -250,10 +250,10 @@ const Post = ({ post }) => {
       <img
         src={post?.image}
         alt="postimage"
-        className="object-cover rounded-lg my-2 w-full h-[90%] "
+        className="object-cover rounded-lg my-2 w-full h-[90%]  "
       />
       <div className="">
-        <div className="flex items-center justify-between my-2">
+        <div className="flex items-center justify-between my-2 ">
           <div className="flex  items-center gap-3">
             <Heart
               style={liked ? { fill: "red" } : { fill: "" }}
