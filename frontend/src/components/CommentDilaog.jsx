@@ -13,7 +13,7 @@ import { setPosts } from "@/redux/slice/PostSlice";
 
 const CommentDilaog = ({ open, setOpen }) => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
 
   const { selectedpost, posts } = useSelector((store) => store.post);
 
@@ -69,83 +69,166 @@ const CommentDilaog = ({ open, setOpen }) => {
   };
 
   return (
+    // <Dialog open={open}>
+    //   <DialogContent
+    //     onInteractOutside={() => setOpen(!open)}
+    //     className=" p-0 flex flex-col max-w-4xl w-full md:flex-row"
+    //   >
+    //     <div className="flex flex-1">
+    //       <div className="w-1/2 ">
+    //         <img
+    //           src={selectedpost?.image}
+    //           alt="postimage"
+    //           className="w-full h-full object-cover rounded-lg"
+    //         />
+    //       </div>
+    //       <div className="w-1/2 flex flex-col items-between ">
+    //         <div className="flex items-center justify-between p-4">
+    //           <div className="flex gap-3 items-center">
+    //             <Link>
+    //               <Avatar>
+    //                 <AvatarImage
+    //                   src={selectedpost?.author?.profilepic}
+    //                   alt="userpic"
+    //                 />
+    //                 <AvatarFallback>
+    //                   {selectedpost?.author?.username.charAt(0)}
+    //                 </AvatarFallback>
+    //               </Avatar>
+    //             </Link>
+    //             <div>
+    //               <Link className="font-semibold ">
+    //                 {selectedpost?.author?.username}
+    //               </Link>
+    //               {/* <span>bio here</span> */}
+    //             </div>
+    //           </div>
+    //           <Dialog>
+    //             <DialogTrigger asChild>
+    //               <MoreHorizontal className="cursor-pointer" />
+    //             </DialogTrigger>
+    //             <DialogContent className="flex flex-col items-center text-center text-sm">
+    //               <Button
+    //                 variant="ghost"
+    //                 className="cursor-pointer w-fit font-bold"
+    //               >
+    //                 unfollow
+    //               </Button>
+    //               <Button
+    //                 variant="ghost"
+    //                 className="cursor-pointer w-fit font-bold"
+    //               >
+    //                 Favorite
+    //               </Button>
+    //               <Button variant="ghost" className="cursor-pointer w-fit ">
+    //                 Delete
+    //               </Button>
+    //             </DialogContent>
+    //           </Dialog>
+    //         </div>
+    //         <hr />
+    //         <div className="flex-1 overflow-y-auto max-h-94 p-4">
+    //           {comment?.map((cmnt) => (
+    //             <Comment key={cmnt._id} cmnt={cmnt} />
+    //           ))}
+    //         </div>
+
+    //         <div className="p-4">
+    //           <div className="flex items-center gap-2">
+    //             <input
+    //               value={text}
+    //               onChange={changeEventHandler}
+    //               type="text"
+    //               placeholder="Add a comment..."
+    //               className="outline-none w-full border border-gray-300 p-2 rounded-lg"
+    //             />
+    //             <Button disabled={!text.trim()} onClick={commenthandler}>
+    //               <SendHorizontal className="h-4 w-4" />
+    //             </Button>
+    //           </div>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </DialogContent>
+    // </Dialog>
+
     <Dialog open={open}>
       <DialogContent
         onInteractOutside={() => setOpen(!open)}
-        className="max-w-4xl p-0 flex flex-col"
+        className="p-0 flex flex-col max-w-4xl w-full md:flex-row"
       >
-        <div className="flex flex-1">
-          <div className="w-1/2 ">
-            <img
-              src={selectedpost?.image}
-              alt="postimage"
-              className="w-full h-full object-cover rounded-lg"
-            />
-          </div>
-          <div className="w-1/2 flex flex-col items-between ">
-            <div className="flex items-center justify-between p-4">
-              <div className="flex gap-3 items-center">
-                <Link>
-                  <Avatar>
-                    <AvatarImage
-                      src={selectedpost?.author?.profilepic}
-                      alt="userpic"
-                    />
-                    <AvatarFallback>
-                      {selectedpost?.author?.username.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
+        <div className="w-full md:w-1/2 flex items-center mt-2 lg:mt-0 justify-center">
+          <img
+            src={selectedpost?.image}
+            alt="postimage"
+            className="w-[50%] h-[50%] lg:w-full lg:h-full object-cover rounded-lg"
+          />
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col">
+          <div className="flex items-center justify-between p-2">
+            <div className="flex gap-3 items-center">
+              <Link>
+                <Avatar>
+                  <AvatarImage
+                    src={selectedpost?.author?.profilepic}
+                    alt="userpic"
+                  />
+                  <AvatarFallback>
+                    {selectedpost?.author?.username.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+              </Link>
+              <div className="flex flex-col">
+                <Link className="font-semibold ">
+                  {selectedpost?.author?.username}
                 </Link>
-                <div>
-                  <Link className="font-semibold ">
-                    {selectedpost?.author?.username}
-                  </Link>
-                  {/* <span>bio here</span> */}
-                </div>
+                <span>{selectedpost?.caption}</span>
               </div>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <MoreHorizontal className="cursor-pointer" />
-                </DialogTrigger>
-                <DialogContent className="flex flex-col items-center text-center text-sm">
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer w-fit font-bold"
-                  >
-                    unfollow
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="cursor-pointer w-fit font-bold"
-                  >
-                    Favorite
-                  </Button>
+            </div>
+            {/* <Dialog> */}
+            {/* <DialogTrigger asChild>
+                <MoreHorizontal className="cursor-pointer" />
+              </DialogTrigger>
+              <DialogContent className="flex flex-col items-center text-center text-sm">
+                <Button
+                  variant="ghost"
+                  className="cursor-pointer w-fit font-bold"
+                >
+                  unfollow
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="cursor-pointer w-fit font-bold"
+                >
+                  Favorite
+                </Button>
+                {/* {selectedpost?.author?.username === user?.username && (
                   <Button variant="ghost" className="cursor-pointer w-fit ">
                     Delete
                   </Button>
-                </DialogContent>
-              </Dialog>
-            </div>
-            <hr />
-            <div className="flex-1 overflow-y-auto max-h-94 p-4">
-              {comment?.map((cmnt) => (
-                <Comment key={cmnt._id} cmnt={cmnt} />
-              ))}
-            </div>
+                )} */}
+            {/* </DialogContent> */}
+            {/* </Dialog> */}
+          </div>
+          <hr />
+          <div className="flex-1 overflow-y-auto max-h-94 p-4">
+            {comment?.map((cmnt) => (
+              <Comment key={cmnt._id} cmnt={cmnt} />
+            ))}
+          </div>
 
-            <div className="p-4">
-              <div className="flex items-center gap-2">
-                <input
-                  value={text}
-                  onChange={changeEventHandler}
-                  type="text"
-                  placeholder="Add a comment..."
-                  className="outline-none w-full border border-gray-300 p-2 rounded-lg"
-                />
-                <Button disabled={!text.trim()} onClick={commenthandler}>
-                  <SendHorizontal className="h-4 w-4" />
-                </Button>
-              </div>
+          <div className="p-4">
+            <div className="flex items-center gap-2">
+              <input
+                value={text}
+                onChange={changeEventHandler}
+                type="text"
+                placeholder="Add a comment..."
+                className="outline-none w-full border border-gray-300 p-2 rounded-lg"
+              />
+              <Button disabled={!text.trim()} onClick={commenthandler}>
+                <SendHorizontal className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </div>
