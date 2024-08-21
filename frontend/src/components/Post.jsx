@@ -30,6 +30,7 @@ const Post = ({ post }) => {
   const [isFollowing, setIsFollowing] = useState(
     user?.followings?.includes(post?.author?._id) || false
   );
+  const [color, setColor] = useState(true);
 
   useEffect(() => {
     if (user?.followings?.includes(post?.author?._id)) {
@@ -187,14 +188,27 @@ const Post = ({ post }) => {
 
   const bookmarkhandler = async () => {
     try {
+      console.log("bookmarkhandler of token ", token);
+      console.log("bookmarkhandler of post?._id ", post?._id);
       const res = await axios.get(
         `${import.meta.env.VITE_API_SERVER_URL}/api/post/bookmark/${post?._id}`,
         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         }
       );
-      console.log(`bookmarkhandler of ${post?._id}`, res.data);
+      console.log(`bookmarkhandler of ${post?._id}`, res);
       if (res.data.success) {
+        if (res.data.message === "Post bookmarked successfully") {
+          setColor(true);
+        } else if (res.data.message === "Post removed from bookmarks") {
+          setColor(false);
+        } else {
+          setColor(false);
+        }
+
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -271,6 +285,7 @@ const Post = ({ post }) => {
           </div>
           <Bookmark
             onClick={bookmarkhandler}
+            style={color ? { fill: "black" } : { fill: "" }}
             className="cursor-pointer hover:text-gray-600"
           />
         </div>

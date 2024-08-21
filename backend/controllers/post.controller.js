@@ -318,7 +318,7 @@ export const bookmarkpost = trycatchasyncerror(async (req, res, next) => {
       await user.save();
       return res.status(200).json({
         success: true,
-        message: `Post ${post._id} removed from bookmarks`,
+        message: `Post removed from bookmarks`,
         data: user,
       });
     } else {
