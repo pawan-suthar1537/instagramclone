@@ -12,6 +12,7 @@ const io = new Server(server, {
       "http://localhost:5173",
       "https://linkedincloneback.vercel.app",
       "https://instagramclonefrontend.vercel.app",
+      "https://instagramclone-backend-4vd3.onrender.com",
     ],
     methods: ["GET", "POST"],
   },
