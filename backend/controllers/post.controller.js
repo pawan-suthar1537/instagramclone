@@ -47,7 +47,7 @@ export const addpost = trycatchasyncerror(async (req, res, next) => {
     )}`;
 
     const cloudinaryres = await cloudinary.uploader.upload(fileuri, {
-      folder: `profilepic/posts/${req.user.username}`,
+      folder: `profilepic/posts/${req.user.username.trim()}`,
       public_id: `${req.user.username}-post`,
       use_filename: true,
     });
