@@ -49,7 +49,7 @@ export const registerUser = trycatchasyncerror(async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      message: `accout created successfully`,
+      message: `account created successfully`,
       data: user,
     });
   } catch (error) {

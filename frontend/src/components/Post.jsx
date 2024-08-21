@@ -193,6 +193,7 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
+      console.log(`bookmarkhandler of ${post?._id}`, res.data);
       if (res.data.success) {
         toast.success(res.data.message);
       }
@@ -201,8 +202,6 @@ const Post = ({ post }) => {
       toast.error(error.response?.data?.message || "failed to bookmark post");
     }
   };
-
-  console.log("isFollowing", isFollowing);
 
   return (
     <div className="my-8 w-full max-w-sm mx-auto p-5 lg:p-0">
