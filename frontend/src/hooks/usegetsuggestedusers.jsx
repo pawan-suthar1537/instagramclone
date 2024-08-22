@@ -19,7 +19,7 @@ const useGetSuggestedUsers = () => {
             withCredentials: true,
           }
         );
-        console.log("useGetSuggestedUsers", res.data.data);
+      
         if (res.data.success) {
           dispatch(setsuggestedusers(res.data.data));
         }

@@ -44,7 +44,6 @@ const CreatePostDialog = ({ open, setopen }) => {
         formData.append("image", image);
       }
 
-      console.log(formData);
       const res = await axios.post(
         `${import.meta.env.VITE_API_SERVER_URL}/api/post/createpost`,
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UseGetUserProfile = (userid) => {
   const { token } = useSelector((state) => state.auth);
-  console.log("token fomr fetch GetUserProfile ", token);
+  
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,7 +20,7 @@ const UseGetUserProfile = (userid) => {
             withCredentials: true,
           }
         );
-        console.log(`UseGetUserProfile of ${userid}`, res.data.data);
+        
         if (res.data.success) {
           dispatch(setuserprofile(res.data.data));
         }

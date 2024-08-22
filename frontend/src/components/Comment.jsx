@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const Comment = ({ cmnt }) => {
-  console.log(cmnt);
+  // console.log(cmnt);
 
   return (
     <div className="my-2">

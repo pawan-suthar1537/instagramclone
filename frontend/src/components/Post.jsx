@@ -30,7 +30,9 @@ const Post = ({ post }) => {
   const [isFollowing, setIsFollowing] = useState(
     user?.followings?.includes(post?.author?._id) || false
   );
-  const [color, setColor] = useState(true);
+  const [color, setColor] = useState(
+    user?.bookmark?.includes(post?._id) || false
+  );
 
   useEffect(() => {
     if (user?.followings?.includes(post?.author?._id)) {
@@ -64,7 +66,7 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      console.log(post._id);
+      
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -85,7 +87,7 @@ const Post = ({ post }) => {
         toast.error("User is not logged in.");
         return;
       }
-      console.log("token", token);
+     
       const res = await axios.post(
         `${import.meta.env.VITE_API_SERVER_URL}/api/user/followunfollow/${
           post?.author?._id
@@ -98,7 +100,7 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      console.log("followunfollow", res.data);
+      
       if (res.data.success) {
         const { followers, followings } = res.data;
 
@@ -188,8 +190,7 @@ const Post = ({ post }) => {
 
   const bookmarkhandler = async () => {
     try {
-      console.log("bookmarkhandler of token ", token);
-      console.log("bookmarkhandler of post?._id ", post?._id);
+      
       const res = await axios.get(
         `${import.meta.env.VITE_API_SERVER_URL}/api/post/bookmark/${post?._id}`,
         {
@@ -199,12 +200,23 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      console.log(`bookmarkhandler of ${post?._id}`, res);
+
       if (res.data.success) {
         if (res.data.message === "Post bookmarked successfully") {
           setColor(true);
+          dispatch(
+            setUser({ ...user, bookmark: [...user.bookmark, post?._id] })
+          );
+         
         } else if (res.data.message === "Post removed from bookmarks") {
           setColor(false);
+          dispatch(
+            setUser({
+              ...user,
+              bookmarks: user.bookmark.filter((id) => id !== post?._id),
+            })
+          );
+          
         } else {
           setColor(false);
         }

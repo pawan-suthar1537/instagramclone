@@ -43,7 +43,7 @@ const EditProfile = () => {
 
   const editprofile = async (e) => {
     e.preventDefault();
-    console.log("input for edit profile", Input);
+    
     const formData = new FormData();
     formData.append("bio", Input.bio);
     formData.append("gender", Input.gender);
@@ -67,7 +67,7 @@ const EditProfile = () => {
           withCredentials: true,
         }
       );
-      console.log("res", res.data.data);
+      
       if (res.data.success) {
         const updateduserdata = {
           ...user,

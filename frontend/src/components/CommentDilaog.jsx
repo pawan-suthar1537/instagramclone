@@ -49,7 +49,7 @@ const CommentDilaog = ({ open, setOpen }) => {
       );
       if (res.data.success) {
         const updatedcommentdata = [...comment, res.data.data];
-        console.log(updatedcommentdata);
+
         setComment(updatedcommentdata);
 
         const updatedpostdata = posts.map((p) =>

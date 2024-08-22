@@ -14,7 +14,7 @@ const Usegetallposts = () => {
             withCredentials: true,
           }
         );
-        console.log("Usegetallposts", res.data.data);
+        
         if (res.data.success) {
           dispatch(setPosts(res.data.data));
         }
