@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -11,6 +11,9 @@ import { useDispatch } from "react-redux";
 import { setToken, setUser } from "@/redux/slice/AuthSlice";
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [input, setInput] = useState({

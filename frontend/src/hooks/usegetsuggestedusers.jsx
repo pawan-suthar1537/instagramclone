@@ -19,12 +19,12 @@ const useGetSuggestedUsers = () => {
             withCredentials: true,
           }
         );
-      
+
         if (res.data.success) {
           dispatch(setsuggestedusers(res.data.data));
         }
       } catch (error) {
-        console.log("Error fetching suggested users:", error);
+        console.log("");
       }
     };
 

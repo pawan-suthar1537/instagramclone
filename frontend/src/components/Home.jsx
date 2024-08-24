@@ -3,8 +3,12 @@ import Feed from "./Feed";
 import RightSideBar from "./RightSideBar";
 import Usegetallposts from "@/hooks/Usegetallposts";
 import useGetSuggestedUsers from "@/hooks/usegetsuggestedusers";
+import { useEffect } from "react";
 
 const Home = () => {
+  useEffect(() => {
+    document.title = "Home";
+  }, []);
   Usegetallposts();
   useGetSuggestedUsers();
   return (

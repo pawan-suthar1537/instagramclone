@@ -10,7 +10,7 @@ import { errorHandlerMiddleware } from "./middlewares/customerror.js";
 
 // variable
 const PORT = process.env.PORT || 3000;
-const isLoggerEnabled = process.env.isLogger === true;
+const isLoggerEnabled = process.env.isLogger || false;
 
 //routes imports
 import userRoutes from "./routes/userroutes.js";
@@ -21,7 +21,10 @@ import messageRoutes from "./routes/messageroutes.js";
 dotenv.config();
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://instagramclonefrontend.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://instagramclonefrontend.vercel.app",
+    ],
     credentials: true,
   })
 );

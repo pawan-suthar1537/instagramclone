@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -8,6 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 
 const Signup = () => {
+  useEffect(() => {
+    document.title = "SIgnup";
+  }, []);
   const navigate = useNavigate();
   const [input, setInput] = useState({
     username: "",

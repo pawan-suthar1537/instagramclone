@@ -11,6 +11,9 @@ import { toast } from "sonner";
 import { setmessagess } from "@/redux/slice/ChatSlice";
 
 const Chatpage = () => {
+  useEffect(() => {
+    document.title = "Chats";
+  }, []);
   const dispatch = useDispatch();
   const [message, setmessage] = useState("");
   const { user, token } = useSelector((state) => state.auth);

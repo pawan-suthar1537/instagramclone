@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -7,6 +7,9 @@ import Usegetallmessages from "@/hooks/UseGetAllMessage";
 import Usegetallrealtimemessages from "@/hooks/Usegetrealtimemessages";
 
 const Messages = ({ selecteduser }) => {
+  useEffect(() => {
+    document.title = "Messages";
+  }, []);
   Usegetallrealtimemessages();
   Usegetallmessages();
   const { messages } = useSelector((state) => state.chat);

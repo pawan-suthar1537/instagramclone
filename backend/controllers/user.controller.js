@@ -199,7 +199,9 @@ export const editprofile = trycatchasyncerror(async (req, res, next) => {
     }
 
     user.bio = bio || user.bio;
-    user.gender = gender || user.gender;
+    if(user.gender){
+      user.gender = gender || user.gender;
+    }
     user.profilepic = profilePicUrl;
 
     await user.save();

@@ -76,6 +76,10 @@ const Sidebar = () => {
       navigate(`/`);
     } else if (name === "Message") {
       navigate(`/chat`);
+    } else if (name === "Explore") {
+      navigate(`/explore`);
+    } else if (name === "Search") {
+      navigate(`/search`);
     }
     if (isMobile) setOpen(false);
   };

@@ -13,6 +13,9 @@ import { setSocket } from "./redux/slice/Socketslice";
 import { setonlineusers } from "./redux/slice/ChatSlice";
 import { setlikenotification } from "./redux/slice/NotificationSlice";
 import ProtectedRoute from "./components/ProtectedRoute";
+import PageTitle from "./components/Pagetitle";
+import Explore from "./components/Explore";
+import Search from "./components/Search";
 
 const browserrouter = createBrowserRouter([
   {
@@ -38,6 +41,14 @@ const browserrouter = createBrowserRouter([
       {
         path: "/chat",
         element: <Chatpage />,
+      },
+      {
+        path: "/explore",
+        element: <Explore />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },
@@ -85,7 +96,7 @@ function App() {
   }, [user, dispatch]);
   return (
     <>
-      <RouterProvider router={browserrouter} />
+      <RouterProvider router={browserrouter}></RouterProvider>
     </>
   );
 }

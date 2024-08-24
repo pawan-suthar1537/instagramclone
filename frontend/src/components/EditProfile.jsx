@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "./ui/button";
@@ -18,6 +18,9 @@ import { setUser } from "@/redux/slice/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
+  useEffect(() => {
+    document.title = "Edit Profile";
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const imageref = useRef();
@@ -43,7 +46,7 @@ const EditProfile = () => {
 
   const editprofile = async (e) => {
     e.preventDefault();
-    
+
     const formData = new FormData();
     formData.append("bio", Input.bio);
     formData.append("gender", Input.gender);
@@ -67,13 +70,13 @@ const EditProfile = () => {
           withCredentials: true,
         }
       );
-      
+
       if (res.data.success) {
         const updateduserdata = {
           ...user,
           bio: res.data.data?.bio,
           gender: res.data.data.gender,
-          profilepic: res.data.data.profilepic, 
+          profilepic: res.data.data.profilepic,
         };
         dispatch(setUser(updateduserdata));
         toast.success(res.data.message);

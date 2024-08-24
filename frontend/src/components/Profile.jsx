@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import UseGetUserProfile from "@/hooks/UseGetUserProfile";
 import { Link, useParams } from "react-router-dom";
@@ -13,12 +13,14 @@ const Profile = () => {
 
   const userid = params.id;
 
+  useEffect(() => {
+    document.title = "Profile";
+  }, []);
 
   UseGetUserProfile(userid);
 
   const { userprofile } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.auth);
-  
 
   const isloggedin = user?._id === userprofile?._id;
   const isfollowing = false;
