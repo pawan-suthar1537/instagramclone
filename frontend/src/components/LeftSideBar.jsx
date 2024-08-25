@@ -128,7 +128,7 @@ const Sidebar = () => {
           >
             <div className="mb-6 flex items-center justify-between">
               <Typography variant="h5" color="blue-gray">
-                Instagram Clone
+                Instagram
               </Typography>
               <IconButton
                 variant="text"
@@ -169,13 +169,13 @@ const Sidebar = () => {
       ) : (
         <div className="hidden md:block fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
           <div className="flex flex-col">
-            <div className="my-4 flex items-center font-bold text-xl text-center">
+            <div className="my-4 flex items-center font-bold text-xl justify-center text-center ">
               <img
                 src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e9/d3/51/e9d35161-58c1-5ba7-66d1-f51dcae69707/Prod-0-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.webp"
                 className="h-10 w-10 rounded-full"
                 alt=""
               />
-              <span className="ml-2">Instagram Clone</span>
+              <span className="ml-2">Instagram </span>
             </div>
             <div>
               {sidebarItems.map((item, index) => (
