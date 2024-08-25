@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { setPosts, setSelectedPost } from "@/redux/slice/PostSlice";
 import { setUser } from "@/redux/slice/AuthSlice";
+import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.auth);
@@ -66,7 +67,6 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -87,7 +87,7 @@ const Post = ({ post }) => {
         toast.error("User is not logged in.");
         return;
       }
-     
+
       const res = await axios.post(
         `${import.meta.env.VITE_API_SERVER_URL}/api/user/followunfollow/${
           post?.author?._id
@@ -100,7 +100,7 @@ const Post = ({ post }) => {
           withCredentials: true,
         }
       );
-      
+
       if (res.data.success) {
         const { followers, followings } = res.data;
 
@@ -190,7 +190,6 @@ const Post = ({ post }) => {
 
   const bookmarkhandler = async () => {
     try {
-      
       const res = await axios.get(
         `${import.meta.env.VITE_API_SERVER_URL}/api/post/bookmark/${post?._id}`,
         {
@@ -207,7 +206,6 @@ const Post = ({ post }) => {
           dispatch(
             setUser({ ...user, bookmark: [...user.bookmark, post?._id] })
           );
-         
         } else if (res.data.message === "Post removed from bookmarks") {
           setColor(false);
           dispatch(
@@ -216,7 +214,6 @@ const Post = ({ post }) => {
               bookmarks: user.bookmark.filter((id) => id !== post?._id),
             })
           );
-          
         } else {
           setColor(false);
         }
@@ -232,13 +229,16 @@ const Post = ({ post }) => {
   return (
     <div className="my-8 w-full max-w-sm mx-auto p-5 lg:p-0">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src={post?.author?.profilepic} alt="userpic" />
-            <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <h1>{post?.author?.username}</h1>
-        </div>
+        <Link to={`/profile/${post?.author?._id}`}>
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage src={post?.author?.profilepic} alt="userpic" />
+              <AvatarFallback>{user?.username.charAt(0)}</AvatarFallback>
+            </Avatar>
+
+            <h1>{post?.author?.username}</h1>
+          </div>
+        </Link>
         <Dialog size="" className="w-4">
           <DialogTrigger asChild>
             <MoreHorizontal className="cursor-pointer" />

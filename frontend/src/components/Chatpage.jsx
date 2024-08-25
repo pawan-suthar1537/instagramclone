@@ -53,6 +53,9 @@ const Chatpage = () => {
     };
   }, []);
 
+  const isSelectedUserOnline =
+    selecteduser && onlineusers.includes(selecteduser._id);
+
   return (
     <div className="flex md:ml-[16%] h-screen">
       {/* User List Section */}
@@ -89,7 +92,7 @@ const Chatpage = () => {
       {/* Chat Section */}
       {selecteduser ? (
         <section className="flex-1 border-l-2 border-l-gray-300 flex flex-col h-full">
-          <div className="flex gap-3 items-center px-3 py-2 border-b border-gray-300 sticky top-0 bg-white z-10">
+          <div className="flex gap-3 items-center px-3 py-2 border-b border-gray-300 lg:sticky top-0 bg-white ">
             <Avatar className="w-14 h-14">
               <AvatarImage src={selecteduser?.profilepic} />
               <AvatarFallback>
@@ -99,6 +102,14 @@ const Chatpage = () => {
             <div className="flex flex-col">
               <span>{selecteduser.username}</span>
             </div>
+
+            <span
+              className={`text-xs font-bold ${
+                isSelectedUserOnline ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {isSelectedUserOnline ? "Online" : "Offline"}
+            </span>
           </div>
           <Messages selecteduser={selecteduser} />
           <div className="flex items-center p-4 border-t border-t-gray-300">

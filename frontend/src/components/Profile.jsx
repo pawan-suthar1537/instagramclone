@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import UseGetUserProfile from "@/hooks/UseGetUserProfile";
 import { Link, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "./ui/button";
 import { Heart, MessageCircle } from "lucide-react";
+import axios from "axios";
+import { setUser } from "@/redux/slice/AuthSlice";
+import { toast } from "sonner";
 
 const Profile = () => {
   const params = useParams();
@@ -19,11 +22,53 @@ const Profile = () => {
 
   UseGetUserProfile(userid);
 
-  const { userprofile } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.auth);
+  const { userprofile, user, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const isloggedin = user?._id === userprofile?._id;
-  const isfollowing = false;
+  const [isFollowing, setIsFollowing] = useState(
+    user?.followings?.includes(userprofile?._id) || false
+  );
+
+  const followUnfollowHandler = async () => {
+    try {
+      if (!user) {
+        toast.error("User is not logged in.");
+        return;
+      }
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_SERVER_URL}/api/user/followunfollow/${
+          userprofile?._id
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        const { followers, followings } = res.data;
+
+        dispatch(
+          setUser({
+            ...user,
+            followings: followings,
+          })
+        );
+
+        setIsFollowing(!isFollowing);
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || "Failed to follow/unfollow user");
+    }
+  };
+
   const displayposts =
     tab === "post" ? userprofile?.posts : userprofile?.bookmark;
 
@@ -59,19 +104,26 @@ const Profile = () => {
               </>
             ) : (
               <>
-                {isfollowing ? (
+                {isFollowing ? (
                   <>
-                    <Button variant="secondary" className="h-8 mt-4 ">
+                    <Button
+                      variant="secondary"
+                      className="h-8 mt-4 "
+                      onClick={followUnfollowHandler}
+                    >
                       Unfollow
                     </Button>
-                    <Button variant="secondary" className="h-8 mt-4 ">
-                      Message
-                    </Button>
+                    <Link to={"/chat"}>
+                      <Button variant="secondary" className="h-8 mt-4 ">
+                        Message
+                      </Button>
+                    </Link>
                   </>
                 ) : (
                   <Button
                     variant="secondary"
-                    className=" text-white h-8 mt-4 bg-[#557dff] hover:bg-[#557dff]"
+                    className="text-white h-8 mt-4 bg-[#557dff] hover:bg-[#557dff]"
+                    onClick={followUnfollowHandler}
                   >
                     Follow
                   </Button>
@@ -101,14 +153,16 @@ const Profile = () => {
           >
             POST
           </span>
-          <span
-            className={`py-3 cursor-pointer ${
-              tab === "saved" ? "font-bold" : ""
-            }`}
-            onClick={() => handletab("saved")}
-          >
-            SAVED
-          </span>
+          {user?._id === userprofile?._id && (
+            <span
+              className={`py-3 cursor-pointer ${
+                tab === "saved" ? "font-bold" : ""
+              }`}
+              onClick={() => handletab("saved")}
+            >
+              SAVED
+            </span>
+          )}
           <span className="py-3 cursor-pointer">REELS</span>
           <span className="py-3 cursor-pointer">TAGS</span>
         </div>

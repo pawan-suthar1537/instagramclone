@@ -117,7 +117,7 @@ const Sidebar = () => {
           <Button
             variant="ghost"
             onClick={() => setOpen(true)}
-            className="bg-white text-black p-5 stickey top-0 z-50"
+            className="bg-white text-black p-5 stickey top-0 z-100"
           >
             <span className="text-lg">X</span>
           </Button>

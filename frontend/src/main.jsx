@@ -9,13 +9,12 @@ import store from "./redux/store.js";
 import { persistStore } from "redux-persist";
 
 let persistor = persistStore(store);
- 
+
 createRoot(document.getElementById("root")).render(
   <div>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
-
         <Toaster />
       </PersistGate>
     </Provider>
