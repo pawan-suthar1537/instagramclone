@@ -8,6 +8,7 @@ const Usegetallmessages = () => {
   const { token } = useSelector((state) => state.auth);
   const { selecteduser } = useSelector((state) => state.auth);
   useEffect(() => {
+    if (!selecteduser?._id) return;
     const fetchallmessages = async () => {
       try {
         const res = await axios.get(
@@ -29,7 +30,7 @@ const Usegetallmessages = () => {
       }
     };
     fetchallmessages();
-  }, [selecteduser]);
+  }, [selecteduser, token, dispatch]);
 };
 
 export default Usegetallmessages;

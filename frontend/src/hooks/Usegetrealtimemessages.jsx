@@ -1,20 +1,26 @@
 import { setmessagess } from "@/redux/slice/ChatSlice";
-import axios from "axios";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Usegetallrealtimemessages = () => {
   const dispatch = useDispatch();
   const { socket } = useSelector((state) => state.socket);
-  const { messages } = useSelector((state) => state.chat);
+
+  const handleNewMessage = useCallback(
+    (newmessage) => {
+      dispatch(setmessagess((prevMessages) => [...prevMessages, newmessage]));
+    },
+    [dispatch]
+  );
+
   useEffect(() => {
-    socket?.on("newmsg", (newmessage) => {
-      dispatch(setmessagess([...messages, newmessage]));
-    });
+    socket?.on("newmsg", handleNewMessage);
     return () => {
-      socket?.off("newmsg");
+      socket?.off("newmsg", handleNewMessage);
     };
-  }, [messages, setmessagess]);
+  }, [socket, handleNewMessage]);
+
+  return null;
 };
 
 export default Usegetallrealtimemessages;
