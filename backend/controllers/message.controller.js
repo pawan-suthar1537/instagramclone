@@ -52,6 +52,8 @@ export const sendmessage = trycatchasyncerror(async (req, res, next) => {
   }
 });
 
+
+
 export const getmessages = trycatchasyncerror(async (req, res, next) => {
   try {
     const senderid = req.user.userid;

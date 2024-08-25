@@ -92,7 +92,7 @@ const Chatpage = () => {
       {/* Chat Section */}
       {selecteduser ? (
         <section className="flex-1 border-l-2 border-l-gray-300 flex flex-col h-full">
-          <div className="flex gap-3 items-center px-3 py-2 border-b border-gray-300 lg:sticky top-0 bg-white ">
+          <div className="flex gap-3 items-center px-3 py-2 border-b border-gray-300 sticky top-0 bg-white ">
             <Avatar className="w-14 h-14">
               <AvatarImage src={selecteduser?.profilepic} />
               <AvatarFallback>
