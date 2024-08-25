@@ -83,7 +83,7 @@ const Signup = () => {
             value={input.username}
             name="username"
             onChange={ChangeInputHandler}
-            placeholder="enter your Username"
+            placeholder="Username"
             className="focus-visible:ring-transparent"
           />
         </div>
